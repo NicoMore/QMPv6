@@ -73,3 +73,23 @@ Pasos para integrar la cuarta iteracion en la quinta:
 
 Decisiones en quinta iteracion:
     -Sugerencia funciona asincronicamente en usuario.
+
+# Sexta Iteracion
+
+Requerimientos sexta iteracion:
+    - Sugerencia diaria que se actualize todas las mañanas. ✓
+    - Empleado de QMP dispara sugerencias o automaticas. ✓
+    - Usuario quiere conocer ultimas alertas meteorologicas. ✓
+    - Empleado actualiza alertas o automaticas. ✓
+    - Alerta actualizara la sugerencia diaria. ✓
+    - Sugerir paraguas al haber tormenta. ✓
+    - Sugerir no ir en auto al haber granizo. ✓
+    - Posibilidad de recibir mail si hay una alerta y saber cual. ✓
+    - Usuario podra configurar que operaciones se ejecutaran y cuales no. ✓
+
+Pasos para integrar la quinta iteracion en la sexta:
+    - Meteorologo debera conocer las alertas e informarlas a los observers.
+    - QueMePongo debera poder hacer sugerencias e informarlas a los usuarios.
+
+Decisiones en sexta iteracion:
+    - Usuarios actuan como observers de Meteorologo y de QueMePongo.

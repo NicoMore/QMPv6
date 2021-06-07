@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 class QueMePongo { 
     static ArrayList<Prenda> prendasCreadas = new ArrayList<>();
     static ArrayList<Uniforme> uniformesSugeridos = new ArrayList<>();
+    static List<Usuario> usuariosDelSistema = new ArrayList<>();
     
     static List<Prenda> getPrendasSuperiores() {
         return prendasCreadas.stream().filter(unaPrenda -> unaPrenda.getClass() == PrendaSuperior.class).collect(Collectors.toList());
@@ -45,5 +46,32 @@ class QueMePongo {
 
     static int numeroRandomSegunLista(int tamanioLista) {
         return new Random().nextInt(tamanioLista);
+    }
+
+    static void actualizarSugerenciaDiaria() {
+        usuariosDelSistema.stream().filter(unUsuario -> unUsuario.recalculoActivado()).forEach(unUsuario -> unUsuario.recibirSugerenciaDiaria());
+    }
+
+    static Atuendo sugerenciaDelDia() {
+        List<String> alertas = Meteorologo.obtenerAlertas();
+        return recibirSugerenciaSegunAlertas(alertas);
+    }
+
+    static Atuendo recibirSugerenciaSegunAlertas(List<String> alertas) {
+        // TODO: No se especifica como influye alerta en Prenda
+        return null;
+    }
+
+    static Atuendo recibirSugerenciaAtuendoPorTemperatura(Temperatura unaTemperatura) {
+        List<Accesorio> accesorio = new ArrayList<>();
+        accesorio.add(filtrarPorTemperatura(getAccesorios(), unaTemperatura).get(numeroRandomSegunLista(getAccesorios().size())));
+        return new Atuendo( (PrendaSuperior) filtrarPorTemperatura(getPrendasSuperiores(), unaTemperatura).get(numeroRandomSegunLista(getPrendasSuperiores().size())),
+                            (PrendaInferior) filtrarPorTemperatura(getPrendasInferiores(), unaTemperatura).get(numeroRandomSegunLista(getPrendasInferiores().size())),
+                            (Calzado) filtrarPorTemperatura(getCalzados(), unaTemperatura).get(numeroRandomSegunLista(getCalzados().size())), 
+                            accesorio);
+    }
+
+    static void actualizarAlertas() {
+        Meteorologo.notificarAlertas();
     }
 }

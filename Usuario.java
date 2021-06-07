@@ -10,6 +10,36 @@ class Usuario {
     List<Sugerencia> sugerenciasRecibidas = new ArrayList<>();
     List<Sugerencia> sugerenciasAceptadas = new ArrayList<>();
 
+    boolean notificacionesActivadas = false;
+    boolean mailsActivados = false;
+    boolean recalculoActivado = false;
+
+    String mail;
+
+    void activarNotificaciones() {
+        notificacionesActivadas = true;
+    }
+
+    void activarMails() {
+        mailsActivados = true;
+    }
+
+    void activarRecalculo() {
+        recalculoActivado = true;
+    }
+
+    void desactivarNotificaciones() {
+        notificacionesActivadas = false;
+    }
+
+    void desactivarMails() {
+        mailsActivados = false;
+    }
+
+    void desactivarRecalculo() {
+        recalculoActivado = false;
+    }
+
     void compartirGuardarropas(Guardarropa unGuardarropa, Usuario destinatario) {
         destinatario.recibirGuardarropas(unGuardarropa);
     }
@@ -71,12 +101,7 @@ class Usuario {
     }
 
     Atuendo recibirSugerenciaAtuendoPorTemperatura(Temperatura unaTemperatura) {
-        List<Accesorio> accesorio = new ArrayList<>();
-        accesorio.add(QueMePongo.filtrarPorTemperatura(QueMePongo.getAccesorios(), unaTemperatura).get(QueMePongo.numeroRandomSegunLista(QueMePongo.getAccesorios().size())));
-        return new Atuendo( (PrendaSuperior) QueMePongo.filtrarPorTemperatura(QueMePongo.getPrendasSuperiores(), unaTemperatura).get(QueMePongo.numeroRandomSegunLista(QueMePongo.getPrendasSuperiores().size())),
-                            (PrendaInferior) QueMePongo.filtrarPorTemperatura(QueMePongo.getPrendasInferiores(), unaTemperatura).get(QueMePongo.numeroRandomSegunLista(QueMePongo.getPrendasInferiores().size())),
-                            (Calzado) QueMePongo.filtrarPorTemperatura(QueMePongo.getCalzados(), unaTemperatura).get(QueMePongo.numeroRandomSegunLista(QueMePongo.getCalzados().size())), 
-                            accesorio);
+        return QueMePongo.recibirSugerenciaAtuendoPorTemperatura(unaTemperatura);
     }
 
     Uniforme recibirSugerenciaUniforme() {
@@ -99,5 +124,49 @@ class Usuario {
 
     void quitarPrenda(Prenda prenda) {
         misPrendas.remove(prenda);
+    }
+
+    void suscribirseAAlertas() {
+        Meteorologo.agregarSuscriptor(this);
+    }
+
+    void desuscribirseAAlertas() {
+        Meteorologo.quitarSubscriptor(this);
+    }
+
+    void notificarAlertas(List<String> alertas) {
+        String alertasEnFormato;
+
+        for (String unaAlerta : alertas) {
+            alertasEnFormato += (unaAlerta + ", ");
+        }
+
+        if (notificacionesActivadas) {
+            NotificationService.notify("Se recibieron las siguientes alertas: " + alertasEnFormato);
+        }
+
+        if (mailsActivados) {
+            MailSender.send(mail, "Se recibieron las siguientes alertas: " + alertasEnFormato);
+        }
+    }
+
+    void recibirSugerenciaParaguas() {
+        if (notificacionesActivadas) {
+            NotificationService.notify("Debido a la posibilidad de tormentas, se recomienda llevar paraguas!");
+        }
+    }
+
+    void recibirSugerenciaNoUsarAuto() {
+        if (notificacionesActivadas) {
+            NotificationService.notify("Debido a la posibilidad de granizo, se recomienda no viajar en auto!");
+        }
+    }
+
+    public Atuendo recibirSugerenciaDiaria() {
+        return QueMePongo.sugerenciaDelDia();
+    }
+
+    public boolean recalculoActivado() {
+        return recalculoActivado;
     }
 }

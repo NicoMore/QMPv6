@@ -9,6 +9,7 @@ interface Servicio {
     float obtenerProbabilidadDeLluvia();
     String obtenerCondiciones();
     LocalDate obtenerFecha();
+    List<String> obtenerAlertas();
     LocalDate asLocalDate(String fechaEnOtroFormato);
 }
 
@@ -48,5 +49,10 @@ class AccuWeather implements Servicio {
     public LocalDate asLocalDate(String fechaEnOtroFormato) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public String obtenerAlertas() {
+        return api.getAlertas(“Buenos Aires”).get("CurrentAlerts");
     }
 }
